@@ -664,7 +664,11 @@ func (t *templateHandler) extractIdentifiers(line string) []string {
 }
 
 func (t *templateHandler) loadEmbedded() error {
-	for _, kv := range embedded.EmbeddedTemplates {
+	embeddedTemplates, err := embedded.LoadTemplates()
+	if err != nil {
+		return err
+	}
+	for _, kv := range embeddedTemplates {
 		name, templ := kv[0], kv[1]
 		if err := t.AddTemplate(internalPathPrefix+name, templ); err != nil {
 			return err
